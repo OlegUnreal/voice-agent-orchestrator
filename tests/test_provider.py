@@ -1,5 +1,6 @@
 import pytest
 
+from voice_agent.providers.base import ChatMessage
 from voice_agent.providers.openai_compatible import OpenAICompatibleProvider
 from voice_agent.tools.examples import calculator
 
@@ -16,8 +17,32 @@ async def test_calculator_rejects_injection():
         await calculator.run(expression="__import__('os').system('rm -rf /')")
 
 
-@pytest.mark.asyncio
-async def test_provider_payload_roundtrip():
-    p = OpenAICompatibleProvider(api_key="x", base_url="http://localhost", model="m")
-    msg = p._to_payload_type if False else None  # placeholder for richer tests
-    assert OpenAICompatibleProvider._to_payload.__self__ is OpenAICompatibleProvider or True
+def test_provider_payload_roundtrip():
+    msg = ChatMessage(
+        role="tool",
+        content='{"ok": true}',
+        name="calculator",
+        tool_call_id="c1",
+    )
+    assert OpenAICompatibleProvider._to_payload(msg) == {
+        "role": "tool",
+        "content": '{"ok": true}',
+        "tool_call_id": "c1",
+        "name": "calculator",
+    }
+
+    assistant = ChatMessage(
+        role="assistant",
+        content=None,
+        tool_calls=[
+            {
+                "id": "c1",
+                "type": "function",
+                "function": {"name": "calculator", "arguments": "{}"},
+            }
+        ],
+    )
+    payload = OpenAICompatibleProvider._to_payload(assistant)
+    assert payload["role"] == "assistant"
+    assert payload["tool_calls"][0]["id"] == "c1"
+    assert "content" not in payload

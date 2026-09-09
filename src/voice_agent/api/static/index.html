@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Voice Agent Orchestrator</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { font-family: ui-sans-serif, system-ui; margin: 2rem; background: #111; color: #eee; max-width: 44rem; }
+    button, input { font: inherit; padding: .5rem .7rem; }
+    #log { white-space: pre-wrap; border: 1px solid #333; padding: 1rem; min-height: 12rem; }
+    .row { display: flex; gap: .5rem; margin: .6rem 0; }
+    input { flex: 1; }
+  </style>
+</head>
+<body>
+  <h1>Voice agent</h1>
+  <p>Offline scripted mode if no API key. Send text, UTF-8 “audio”, or interrupt.</p>
+  <div class="row">
+    <input id="text" placeholder="Ask about refund policy, time, or 2+3*4" />
+    <button id="send">Send</button>
+    <button id="cut">Interrupt</button>
+  </div>
+  <div class="row">
+    <input id="audio" placeholder="UTF-8 bytes sent as user_audio (passthrough STT)" />
+    <button id="speak">Send as audio</button>
+  </div>
+  <div id="log"></div>
+  <script>
+    const log = (m) => { document.getElementById("log").textContent += m + "\n"; };
+    const proto = location.protocol === "https:" ? "wss" : "ws";
+    const ws = new WebSocket(`${proto}://${location.host}/ws/voice`);
+    ws.onmessage = (e) => log(e.data);
+    ws.onopen = () => log("connected");
+    document.getElementById("send").onclick = () => {
+      ws.send(JSON.stringify({ type: "user_text", text: document.getElementById("text").value }));
+    };
+    document.getElementById("cut").onclick = () => ws.send(JSON.stringify({ type: "interrupt" }));
+    document.getElementById("speak").onclick = () => {
+      const text = document.getElementById("audio").value;
+      ws.send(JSON.stringify({
+        type: "user_audio",
+        mime: "text/plain",
+        audio_b64: btoa(text)
+      }));
+    };
+  </script>
+</body>
+</html>

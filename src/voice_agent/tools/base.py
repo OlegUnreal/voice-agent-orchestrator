@@ -10,6 +10,7 @@ class Tool(ABC):
     name: str
     description: str
     parameters: dict[str, Any]
+    requires_approval: bool = False
 
     @abstractmethod
     async def run(self, **kwargs: Any) -> Any: ...

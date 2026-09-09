@@ -12,7 +12,7 @@ class CurrentTimeTool(Tool):
     parameters: dict[str, Any] = {"type": "object", "properties": {}, "required": []}
 
     async def run(self, **kwargs) -> Any:
-        return datetime.now(timezone.utc).isoformat()
+        return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ UTC")
 
 
 class CalculatorTool(Tool):

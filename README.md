@@ -1,40 +1,29 @@
 # Voice Agent Orchestrator
 
-A production-style voice agent backend in Python. Not a toy demo — real architecture: provider abstraction, streaming, tool-calling loop, session memory, evals.
+Production-style voice agent backend: provider abstraction, streaming tool loop, RAG with grounded refusal, PII/injection defenses, traces, and evals that actually fail.
 
-## Why this exists
-
-Most AI agent tutorials are a single `openai.chat.completions.create` call. This project separates concerns the way a real system does:
-
-- **Providers** are swappable (OpenAI, local vLLM, any OpenAI-compatible endpoint) behind one interface.
-- **The tool loop** is a first-class citizen: the model can call tools, get results, and continue — with a hard iteration cap and structured error recovery.
-- **Streaming** is end-to-end: tokens flow to the client as they are produced, not after the full response.
-- **Sessions** persist conversation + tool traces so you can resume or audit.
-- **Evals** run the agent against a golden set of scenarios and score it.
+Offline mode (empty `PROVIDER_API_KEY`) uses a scripted model so `pytest`, golden evals, and the demo UI run without network.
 
 ## Stack
 
 - Python 3.11+
-- FastAPI + Uvicorn (WebSocket + SSE)
-- Pydantic v2 for config and validation
-- httpx for provider calls (no hard dependency on the OpenAI SDK — keeps it provider-agnostic)
-- structlog for structured logging
-- pytest + pytest-asyncio
-
-PyTorch is intentionally **not** a runtime dependency. It shows up in `evals/`, where a small embedding-based scorer ranks agent responses — the same pattern you'd use to evaluate a fine-tuned model.
+- FastAPI + WebSocket
+- OpenAI-compatible chat, STT, and TTS (optional)
+- Hashing embeddings + lexical gate for RAG (numpy, no PyTorch)
+- pytest + GitHub Actions as the eval gate
 
 ## Layout
 
 ```
 src/voice_agent/
-  config.py          # pydantic settings, env-driven
-  providers/         # LLM provider abstraction + OpenAI-compatible impl
-  tools/             # tool registry, base class, example tools
-  agent/             # the tool-calling loop (the heart)
-  session/           # in-memory session store + trace
-  api/               # FastAPI app, websocket endpoint, SSE
-  evals/             # golden scenarios + scoring
-tests/               # unit + integration tests
+  agent/           # tool loop, parallel tools, budgets, traces
+  voice/           # STT → agent → TTS, barge-in cancel
+  rag/             # embeddings, knowledge store
+  safety/          # PII redaction, injection flags
+  observability/    # latency, tokens, cost
+  evals/           # golden scenarios + scorer
+  api/             # HTTP + /demo
+data/kb/           # retrieval corpus
 ```
 
 ## Run
@@ -42,19 +31,29 @@ tests/               # unit + integration tests
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # set PROVIDER_API_KEY, PROVIDER_BASE_URL
-uvicorn voice_agent.api.main:app --reload
+cp .env.example .env
+PYTHONPATH=src uvicorn voice_agent.api.main:app --reload
 ```
 
-WebSocket: `ws://localhost:8000/ws/voice`
+Windows PowerShell: `$env:PYTHONPATH="src"; uvicorn voice_agent.api.main:app --reload`
 
-## Design decisions worth defending in an interview
+- Health: `GET /health`
+- Metrics: `GET /metrics`
+- Demo UI: `http://localhost:8000/demo/`
+- WebSocket: `ws://localhost:8000/ws/voice`
 
-1. **Provider interface, not SDK lock-in.** Swapping OpenAI for a local model is a config change, not a rewrite.
-2. **Tool loop with a budget.** Unbounded tool loops are how agents burn money and hang. We cap iterations and surface partial results on failure.
-3. **Streaming by default.** Voice latency is the product. Buffering the full response before speaking is a bug.
-4. **Evals as a gate.** No prompt change ships without the golden set going green.
-5. **Trace everything.** Every tool call, token count, and latency is logged — you can't improve what you can't see.
+```bash
+pytest
+python -m voice_agent.evals
+```
+
+## What this is meant to show
+
+1. **Evals as a gate** — golden scenarios drive the real loop; CI fails if tools, keywords, or PII checks regress.
+2. **Grounded RAG** — `knowledge_search` plus refuse-when-empty, not parametric guessing.
+3. **Voice path** — audio frames, passthrough or Whisper-compatible STT, TTS chunks, interrupt cancels the turn.
+4. **Safety** — PII stripped before the model; injection wrapped as untrusted data; refunds need approval.
+5. **Unit economics** — every turn records latency, token estimates, and USD.
 
 ## License
 

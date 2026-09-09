@@ -1,0 +1,2 @@
+The orchestrator streams speech-to-text, runs a tool-calling agent with a hard
+iteration budget, then speaks the answer with low-latency TTS. Providers are OpenAI-compatible.

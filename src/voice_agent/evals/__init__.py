@@ -1,3 +1,3 @@
-from .runner import EvalRunner, EvalScore
+from .runner import EvalRunner, EvalScore, build_offline_agent
 
-__all__ = ["EvalRunner", "EvalScore"]
+__all__ = ["EvalRunner", "EvalScore", "build_offline_agent"]

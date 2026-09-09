@@ -1,0 +1,2 @@
+Northwind Voice Labs refunds unused prepaid minutes within 14 days of purchase.
+Refunds after 14 days require manager approval. Partial months are not prorated.

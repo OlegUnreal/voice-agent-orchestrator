@@ -83,9 +83,8 @@ class OpenAICompatibleProvider(LLMProvider):
                                 "index": tc.get("index", 0),
                                 "id": tc.get("id"),
                                 "name": (tc.get("function") or {}).get("name"),
-                                "arguments": (tc.get("function") or {}).get(
-                                    "arguments", ""
-                                ),
+                                "arguments": (tc.get("function") or {}).get("arguments")
+                                or "",
                             }
                     if choice.get("finish_reason") == "tool_calls":
                         yield {"type": "tool_call.finish"}
