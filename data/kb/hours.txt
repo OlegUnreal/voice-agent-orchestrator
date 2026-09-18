@@ -1,2 +1,20 @@
+Title: Support hours and paging
+Tags: support, hours, paging, escalation
+Updated: 2026-04-02
+
 Northwind Voice Labs support is available Monday to Friday 09:00-18:00 UTC.
 Severity-1 voice outages are paged 24/7.
+
+Standard tickets are answered in the order they are received during support
+hours. The first response target is 4 business hours for Severity 2 and 1
+business day for Severity 3. Messages sent after 18:00 UTC are queued and picked
+up the next business morning in UTC order, not in the sender's local time.
+
+Severity 1 means production voice traffic cannot be placed or answered, or more
+than 20 percent of calls fail. Sev-1 pages route to the on-call telephony
+engineer through the paging service and escalate to the engineering manager
+after 15 minutes without an acknowledgement. Paging is available every day,
+including weekends and public holidays, for Sev-1 only.
+
+Non-urgent questions about invoices, contract changes, or rollout planning are
+handled by the customer success team in the same window and are never paged.

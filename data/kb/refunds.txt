@@ -1,2 +1,21 @@
+Title: Refund policy for prepaid minutes
+Tags: refunds, billing, prepaid minutes, policy
+Updated: 2026-05-12
+
 Northwind Voice Labs refunds unused prepaid minutes within 14 days of purchase.
 Refunds after 14 days require manager approval. Partial months are not prorated.
+To request one, open a billing ticket with the invoice number and the minute
+balance you believe is unused; the balance snapshot taken at the time of the
+request is the one used for the calculation.
+
+Refunds are returned to the original payment method within 5 to 10 business days
+of approval. Card refunds appear as a credit from Northwind Voice Labs. Bank
+transfer credits can take up to 15 business days depending on the receiving
+bank. We do not refund to third-party accounts or to a different payment method
+than the one that was charged.
+
+Promotional credits, trial minutes, and volume discounts that were never
+invoiced are not refundable because no payment was taken for them. If a usage
+spike was caused by a documented platform incident, the affected minutes are
+credited on the next invoice rather than refunded, and the credit appears as a
+separate line item called incident credit.

@@ -1,37 +1,33 @@
+"""Legacy import shim.
+
+v1 kept the embedder here. The implementation moved to
+:mod:`voice_agent.rag.embeddings` (where the TF-IDF+LSA and OpenAI backends live)
+and this module only re-exports the deterministic hashing path so old imports —
+``from voice_agent.rag.embedder import HashingEmbedder, tokenize`` — keep working.
+
+New code should import from ``voice_agent.rag.embeddings``.
+"""
+
 from __future__ import annotations
 
-import hashlib
-import re
+from .embeddings import (
+    DEFAULT_DIM,
+    Embedder,
+    HashingEmbedder,
+    HashingVectorizer,
+    STOPWORDS,
+    TfidfSvdEmbedder,
+    build_embedder,
+    tokenize,
+)
 
-import numpy as np
-
-_TOKEN = re.compile(r"[a-z0-9]+")
-STOPWORDS = {
-    "a", "an", "and", "are", "for", "in", "is", "it", "me", "of", "on", "or",
-    "the", "to", "what", "who", "with", "you", "your",
-}
-
-
-def tokenize(text: str) -> list[str]:
-    return [t for t in _TOKEN.findall(text.lower()) if t not in STOPWORDS]
-
-
-class HashingEmbedder:
-    """Deterministic bag-of-words embedder. No model download, stable in CI."""
-
-    def __init__(self, dim: int = 96) -> None:
-        self.dim = dim
-
-    def embed(self, texts: list[str]) -> np.ndarray:
-        return np.stack([self._one(t) for t in texts])
-
-    def _one(self, text: str) -> np.ndarray:
-        vec = np.zeros(self.dim, dtype=np.float64)
-        for tok in tokenize(text):
-            digest = hashlib.md5(tok.encode()).digest()
-            idx = int.from_bytes(digest[:4], "little") % self.dim
-            vec[idx] += 1.0
-        norm = np.linalg.norm(vec)
-        if norm:
-            vec /= norm
-        return vec
+__all__ = [
+    "DEFAULT_DIM",
+    "Embedder",
+    "HashingEmbedder",
+    "HashingVectorizer",
+    "STOPWORDS",
+    "TfidfSvdEmbedder",
+    "build_embedder",
+    "tokenize",
+]

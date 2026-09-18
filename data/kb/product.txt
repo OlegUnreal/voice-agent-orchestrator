@@ -1,2 +1,22 @@
+Title: Product overview and call pipeline
+Tags: product, architecture, orchestrator, streaming, barge-in
+Updated: 2026-06-01
+
 The orchestrator streams speech-to-text, runs a tool-calling agent with a hard
-iteration budget, then speaks the answer with low-latency TTS. Providers are OpenAI-compatible.
+iteration budget, then speaks the answer with low-latency text-to-speech.
+Providers are OpenAI-compatible.
+
+A call is processed as a pipeline. Audio frames arrive over a WebSocket, a
+voice-activity detector segments them into utterances, the streaming
+speech-to-text model emits partial transcripts, and the agent loop is woken on
+each final transcript. The agent may call tools, retrieve from the knowledge
+base, or answer directly. Partial answers are handed to the text-to-speech model
+sentence by sentence so playback starts before the full reply is generated.
+
+Barge-in is supported. When the caller speaks while the assistant is talking,
+the current synthesis stream is cancelled, the truncation point is recorded in
+the transcript, and the agent re-plans with the interrupted turn included.
+
+Every turn is bounded by an iteration budget so a misbehaving tool cannot spin
+the loop, and every tool call is validated against its JSON schema before it
+runs. Sessions keep a rolling window of messages under a token budget.

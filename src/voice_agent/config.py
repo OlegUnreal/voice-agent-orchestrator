@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     memory_max_messages: int = Field(default=24, alias="MEMORY_MAX_MESSAGES")
     session_token_budget: int = Field(default=8000, alias="SESSION_TOKEN_BUDGET")
 
-    rag_min_score: float = Field(default=0.18, alias="RAG_MIN_SCORE")
+    rag_min_score: float = Field(default=0.10, alias="RAG_MIN_SCORE")
     rag_top_k: int = Field(default=3, alias="RAG_TOP_K")
 
     input_token_usd_per_1m: float = Field(default=0.15, alias="INPUT_TOKEN_USD_PER_1M")

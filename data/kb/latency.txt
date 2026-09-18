@@ -1,0 +1,23 @@
+Title: Voice latency budget and p95 targets
+Tags: latency, p95, budget, turn around time, performance
+Updated: 2026-06-01
+
+The end-to-end target is a 700 millisecond median and a 1200 millisecond p95
+voice-to-voice turnaround: the interval between the caller finishing a sentence
+and hearing the first audio frame of the reply.
+
+The budget is allocated across the pipeline. Voice-activity detection closing an
+utterance takes up to 400 milliseconds, the final transcript is available about
+800 milliseconds after end of speech, the first model token is emitted 450
+milliseconds after the prompt is assembled, and the first synthesis frame is
+produced 280 milliseconds after the first complete clause.
+
+Retrieval sits inside the prompt-assembly step and is budgeted at 30
+milliseconds per turn. It is deliberately the cheapest stage in the path: the
+index is in-process, the embedder is a fixed-width matrix multiply, and the
+reranker is one dot product per candidate. If retrieval latency exceeds its
+budget the agent still answers from whatever evidence arrived first.
+
+Latency is measured per turn and published in the console by percentile, not by
+average, because a mean hides the tail that callers actually notice. Regressions
+are alerted at a 15 percent p95 rise sustained for 10 minutes.

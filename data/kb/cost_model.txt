@@ -1,0 +1,24 @@
+Title: Cost per call and unit economics
+Tags: cost, unit economics, tokens, price per call, margin
+Updated: 2026-05-28
+
+A typical four-minute support call costs less than one US cent in model spend.
+The breakdown is the part customers ask for: speech-to-text is billed per audio
+minute, synthesis per character, and the language model per token pair, where a
+turn carries the system prompt, a short retrieval context, and the last few
+messages of history.
+
+Retrieval is the cheapest term by a wide margin because it is computed locally:
+no network hop, no per-request fee, and a fixed cost per turn that does not
+grow with traffic the way a hosted embedding API would. What retrieval does
+affect is the prompt bill, since every character of cited evidence is repeated
+input tokens on all later turns of the session.
+
+That is why the context builder caps quotes, keeps one chunk per document, and
+refuses to answer when the evidence is weak: a wrong answer costs a human
+follow-up, and the handling cost of one misrouted call dwarfs the entire model
+spend of the automated one.
+
+The console reports cost per resolved call, cost per minute of audio, and the
+retrieval share of prompt tokens, so a team can see whether quality or spend
+should move next.

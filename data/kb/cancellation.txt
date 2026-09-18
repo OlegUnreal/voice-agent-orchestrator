@@ -1,0 +1,24 @@
+Title: Cancellation, export, and data deletion
+Tags: cancellation, deletion, export, retention, contract
+Updated: 2026-01-15
+
+Cancellation requires 30 days written notice on annual contracts and is
+effective at the end of the current billing period, never mid-period. Monthly
+plans can be cancelled from the console and stop at the next renewal date.
+Prepaid minutes that remain unused at termination are handled under the refund
+policy window that applied when they were bought.
+
+Export is self-service and unlimited. The console produces newline-delimited
+JSON for transcripts, a CSV for call detail records, and signed links for raw
+media that stay valid for 24 hours. Exports include the retrieval index
+contents so a customer can rebuild search elsewhere, and they can be triggered
+from the API with a manage-scoped key.
+
+Deletion runs on a schedule: the tenant is disabled immediately, media is
+destroyed within 7 days, and derived data such as embeddings, indexes and
+aggregated analytics within 30 days. Backups roll off over 35 days, and the
+final certificate of deletion names the backup expiry date rather than claiming
+an instant wipe.
+
+Support tickets are retained for the statutory period of the billing country
+after cancellation and are deleted with the tenant record afterwards.

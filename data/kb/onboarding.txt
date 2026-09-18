@@ -1,0 +1,22 @@
+Title: Onboarding, sandbox, and go-live checklist
+Tags: onboarding, sandbox, migration, rollout, go-live
+Updated: 2026-05-30
+
+Onboarding runs in four weeks by default. Week one is the sandbox: you get an
+API key, a test trunk, and a synthetic caller harness that replays recorded
+conversations so flows can be tested without dialling real numbers. Sandbox
+traffic is free within the 500 minute allowance.
+
+Week two is knowledge. Upload your policy documents, product facts and support
+answers, then review the retrieval trace for your own questions so you can see
+which chunk the agent cited. Documents that produce empty retrieval results are
+the single most common cause of a bad launch, and the console flags them.
+
+Week three is a shadow pilot: a small percentage of live traffic, recordings
+sampled for human review, no agent writes to your systems. Week four ramps by
+area code. The go-live checklist covers caller ID attestation, the overflow
+trunk, the webhook endpoint and its signature verification, consent disclosure
+for each region, and an escalation path to a human queue.
+
+Migration from another vendor is usually a port of numbers plus a re-record of
+the greeting; call flows are not portable between platforms.

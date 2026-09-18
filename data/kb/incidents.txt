@@ -1,0 +1,22 @@
+Title: Incident management and postmortems
+Tags: incidents, status page, postmortem, severity, rca
+Updated: 2026-03-25
+
+Severity definitions are fixed: Sev-1 is total loss of voice traffic or a
+data exposure, Sev-2 is a degraded region or sustained quality loss, Sev-3 is a
+single-tenant or cosmetic fault. A Sev-1 opens a bridge within 5 minutes of
+detection and a page is sent to the on-call engineer immediately.
+
+Customers see an incident on the public status page within 15 minutes of the
+page going out, with updates at least every 30 minutes while it is active.
+Affected tenants also receive a targeted notification through the webhook and
+the console banner.
+
+Every Sev-1 and Sev-2 gets a written postmortem published within five business
+days. Postmortems are blameless, name a trigger, a contributing set of causes,
+and time-to-detect, time-to-mitigate and time-to-resolve. Each remediation item
+has an owner and a due date, and the follow-through is reviewed in the weekly
+operations meeting rather than left to the author.
+
+We do not publish a postmortem for a Sev-3 unless a customer was billed
+incorrectly.

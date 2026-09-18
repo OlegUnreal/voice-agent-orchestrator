@@ -1,0 +1,21 @@
+Title: Data residency and regional processing
+Tags: data residency, regions, eu, gdpr, transfer
+Updated: 2026-04-22
+
+Workloads run in three regions: eu-central, us-east, and ap-southeast. A tenant
+is pinned to one region at contract signing and all of its media, transcripts,
+embeddings and retrieval indexes stay in that region. There is no cross-region
+replication of customer audio.
+
+For EU tenants, model inference for speech-to-text and text-to-speech is served
+from the in-region OpenAI-compatible endpoint. When a provider cannot serve a
+region, that fact is disclosed in the data processing agreement and the affected
+capability is disabled rather than silently routed elsewhere.
+
+Metadata kept outside the region is limited to aggregate counters used for
+billing and capacity planning: call duration, byte totals, error rates. Those
+counters carry no audio, no transcript text, and no caller number.
+
+A tenant that changes region requires a migration window because indexes must
+be rebuilt in the destination. Requests are scheduled monthly and the old
+region is wiped and certified 14 days after cutover.

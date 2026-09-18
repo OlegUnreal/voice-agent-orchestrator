@@ -1,0 +1,24 @@
+Title: API, webhooks, and CRM integrations
+Tags: integrations, api, webhooks, rest, crm, sdk
+Updated: 2026-04-14
+
+The public API is REST over HTTPS with JSON bodies and is versioned in the path.
+Version 1 is supported for 18 months after a successor ships, and breaking
+changes only ever arrive in a new version. Authentication uses bearer keys
+scoped to read, write, or manage.
+
+Webhooks deliver call lifecycle events: started, answered, transferred,
+finished, and recording available. Delivery retries with exponential backoff
+for 24 hours and every attempt is logged with the response body your endpoint
+returned. Endpoints must answer within 5 seconds and verify the signature
+header, which covers the raw body and is rotated twice a year.
+
+Ready-made integrations exist for the common CRM and contact-centre platforms:
+a call is attached to the matching contact record by phone number, and the
+transcript summary plus any tool outcomes are written as an activity. Custom
+systems usually consume the same events from the webhook rather than the
+vendor connector.
+
+Official SDKs cover Python and TypeScript, both generated from the OpenAPI
+document, and a command line tool ships with the Python package for scripting
+call flows against the sandbox.

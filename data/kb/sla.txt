@@ -1,0 +1,22 @@
+Title: Service level agreement and uptime credits
+Tags: sla, uptime, availability, maintenance, credits
+Updated: 2026-02-11
+
+The platform commits to 99.9 percent monthly availability for the voice
+pipeline on Enterprise contracts and 99.5 percent on Growth. Availability is
+measured against successful call setups plus WebSocket session starts, sampled
+from an external region.
+
+If a month falls below the committed level, service credits are issued without
+a ticket: 10 percent of the monthly fee below the first threshold, 25 percent
+below 99.0 percent. Credits are capped at the monthly fee and are the sole
+remedy for an availability miss. Credits are not offered on Starter.
+
+Planned maintenance is scheduled on Tuesdays between 02:00 and 04:00 UTC,
+announced at least five business days ahead on the status page, and does not
+count against availability. Rolling deploys keep existing calls alive; a call
+already in progress is never dropped by a deploy.
+
+Exclusions are limited to customer-side trunk failure, DNS or certificate
+problems in the customer account, and force majeure. A credit claim must be
+filed within 30 days of the affected invoice.

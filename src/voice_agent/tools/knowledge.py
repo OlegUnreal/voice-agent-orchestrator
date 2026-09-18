@@ -21,7 +21,7 @@ class KnowledgeSearchTool(Tool):
         "additionalProperties": False,
     }
 
-    def __init__(self, store: KnowledgeStore, top_k: int = 3, min_score: float = 0.18) -> None:
+    def __init__(self, store: KnowledgeStore, top_k: int = 3, min_score: float = 0.10) -> None:
         self._store = store
         self._top_k = top_k
         self._min_score = min_score

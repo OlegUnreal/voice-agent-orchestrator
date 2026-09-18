@@ -1,0 +1,22 @@
+Title: Concurrency, rate limits, and backoff
+Tags: rate limits, concurrency, quota, backoff, 429
+Updated: 2026-02-27
+
+Limits are expressed as concurrent calls plus requests per minute on the
+management API. Starter allows 5 concurrent calls, Growth 25, and Enterprise is
+sized per contract. Each tier also carries a 600 requests-per-minute ceiling on
+REST calls made with the same API key.
+
+Breaching an API limit returns HTTP 429 with a Retry-After header. The header
+value is authoritative: clients should sleep exactly that long and add jitter
+before retrying rather than retrying immediately, because a synchronized retry
+storm from a fleet of workers is the usual cause of a second 429.
+
+A concurrent-call breach does not return an error. The new inbound call is
+routed to the overflow trunk or, if none is configured, terminated with a
+busy tone after two rings. Outbound campaigns are paced client-side; the
+platform will queue rather than reject, but the queue drains in order and a
+campaign that outruns capacity simply starts late.
+
+Limit increases are self-service on Growth and above, effective immediately, and
+are billed on the next invoice from the effective date.

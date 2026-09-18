@@ -1,0 +1,21 @@
+Title: Invoices, payment methods, and dunning
+Tags: billing, invoice, payment, dunning, tax
+Updated: 2026-03-18
+
+Invoices are issued on the first business day of each month for the prior
+usage period and are emailed to the billing contact on file. A PDF and a
+CSV breakdown of per-minute usage by trunk are available in the console.
+
+We accept card, SEPA direct debit, and bank transfer in EUR, USD, and GBP.
+Card and direct debit are charged automatically three days after the invoice
+date. Bank transfer accounts carry your reference number; payments without it
+land in an unmatched queue and delay reconciliation.
+
+Dunning runs on a fixed schedule. A failed charge is retried at day 1, day 3,
+and day 7. Concurrency is capped at the contract limit during a billing
+dispute only if the dispute is raised before the invoice due date; otherwise
+service continues and the disputed line is credited later.
+
+Value added tax is applied at the rate of the billing country. Reverse charge
+applies to EU business customers who store a valid VAT identification number
+before the first invoice is generated.

@@ -1,0 +1,24 @@
+Title: Analytics, dashboards, and metric definitions
+Tags: analytics, dashboard, metrics, containment rate, reporting
+Updated: 2026-04-08
+
+The console reports volume, quality and cost in one place, with every metric
+defined in the tooltip so two teams cannot disagree about what containment
+means. Definitions are versioned; if a metric changes shape the changelog says
+so and the old series is kept alongside.
+
+Containment rate counts calls resolved without a human, and excludes calls
+where the caller asked for a person within the first two turns. Comprehension
+failure rate counts consecutive turns where the transcript confidence fell
+below the threshold. Abandonment is measured against hold, not against the
+whole call, because a caller who hangs up during a transfer is not an
+abandoned bot call.
+
+Dashboards are per trunk and per intent, refresh within five minutes, and cover
+the current day plus any retained history window the tenant selected. Exports
+are CSV from the UI or newline-delimited JSON from the API, and a scheduled
+report can be emailed weekly to a distribution list.
+
+Custom dimensions let you tag a call with up to ten key-value pairs from a tool
+result and slice every metric by them, which is how most teams end up tracking
+outcomes per campaign rather than per number.

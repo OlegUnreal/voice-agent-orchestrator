@@ -1,8 +1,18 @@
+"""Bundled fallback corpus.
+
+``data/kb/*.txt`` is the source of truth. These three documents exist so the store
+still works if the corpus directory is missing (a trimmed install, a container that
+forgot to copy ``data/``); they mirror ``refunds.txt``, ``hours.txt`` and
+``product.txt`` verbatim, and ``tests/test_rag_embeddings.py::test_seed_docs_match_files``
+fails if the two ever drift.
+
+``load_knowledge`` now lives in :mod:`voice_agent.rag.store` — it is re-exported
+here because the API and the eval runner import it from this module.
+"""
+
 from __future__ import annotations
 
-from pathlib import Path
-
-from .store import KnowledgeStore
+from .store import KnowledgeStore, load_knowledge
 
 DEFAULT_DOCS = [
     (
@@ -25,12 +35,4 @@ DEFAULT_DOCS = [
     ),
 ]
 
-
-def load_knowledge(path: Path | None = None) -> KnowledgeStore:
-    store = KnowledgeStore()
-    for doc_id, title, text in DEFAULT_DOCS:
-        store.add(doc_id, title, text)
-    if path and path.exists():
-        for file in sorted(path.glob("*.txt")):
-            store.add(file.stem, file.stem.replace("_", " "), file.read_text(encoding="utf-8"))
-    return store
+__all__ = ["DEFAULT_DOCS", "KnowledgeStore", "load_knowledge"]

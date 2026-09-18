@@ -1,0 +1,24 @@
+Title: Authoring knowledge base documents
+Tags: knowledge base, documents, chunking, titles, tags, authoring
+Updated: 2026-06-01
+
+The knowledge base is a directory of plain text files, one topic per file. Each
+file may start with a header block carrying a title, a comma separated tag list,
+and an updated date. The header is not decoration: titles and tags are indexed
+alongside the body, so a document about paging that never uses the word
+after-hours should still carry it as a tag.
+
+Write one fact per paragraph. Retrieval scores paragraphs, not files, so a
+paragraph that mixes a refund rule with a routing rule can be cited for the
+wrong question. Keep each paragraph under roughly 500 characters; longer
+paragraphs are split at sentence boundaries and the split loses the connective
+context that made the sentence precise.
+
+Put the answer in the first sentence. The quote that reaches the model is a
+window around the first matched term, so a policy that buries its date in the
+fourth line will be quoted without it. State numbers in digits, and state dates
+with the year when they can expire.
+
+After uploading, ask the questions you expect from callers and read the
+retrieval trace. If the expected document is not first, the fix is almost always
+a clearer title or a missing tag, not a scoring change.

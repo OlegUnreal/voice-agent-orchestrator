@@ -1,0 +1,22 @@
+Title: Telephony, SIP trunking, and numbers
+Tags: telephony, sip, trunk, codec, caller id
+Updated: 2026-03-02
+
+Inbound calls arrive over SIP from your carrier or from numbers we provision.
+We support G.711 ulaw and alaw, and Opus at 48 kilobits per second when the
+trunk offers it; the media codec is negotiated per call and reported in the call
+detail record.
+
+Trunks are registered by SBC address or by an IP allow list, and both use TLS
+for signalling. Failover is ordered: if the primary trunk does not answer a
+new INVITE within 2 seconds, the call is retried on the secondary trunk before
+any error tone is played, so a single-carrier outage is invisible to callers.
+
+Outbound caller ID must be provisioned per number with the attestation level
+your carrier signs. We can present a pool of local numbers by area code and
+will rotate within the pool for campaigns, keeping the same number for a
+return call so callbacks land in the same queue.
+
+Call detail records are pushed to your webhook endpoint within 30 seconds of
+teardown and include duration, disposition, codec, trunk, and the first and
+last digit strings captured during the call.

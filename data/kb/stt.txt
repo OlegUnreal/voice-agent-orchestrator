@@ -1,0 +1,24 @@
+Title: Streaming speech-to-text behaviour
+Tags: speech to text, transcription, vad, partials, accuracy
+Updated: 2026-05-25
+
+Transcription is streaming. Audio chunks of 20 milliseconds are sent as they
+are captured and partial hypotheses are emitted as the speaker talks, so the
+agent can start planning before the utterance ends. A final transcript is
+produced when the voice-activity detector closes the utterance.
+
+Utterance closing is driven by a trailing-silence window that adapts to the
+conversation: 400 milliseconds during a greeting, 700 milliseconds when the
+caller is reading a long identifier such as an account number. Too short a
+window cuts numbers in half; too long adds latency to every reply.
+
+Accuracy is reported per tenant as word error rate on sampled human-reviewed
+calls. The current production figure sits near 6 percent on clean audio and
+rises on narrowband trunks. Domain biasing lifts it: registering a list of
+product names, plan codes and account vocabulary reduces errors on those terms
+by roughly a third without retraining anything.
+
+Disfluencies are stripped before the text reaches the agent, timestamps are
+attached to every word, and the raw audio is retained separately from the
+transcript so a disputed utterance can be re-listened to inside the retention
+window.

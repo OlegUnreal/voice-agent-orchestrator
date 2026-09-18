@@ -1,0 +1,24 @@
+Title: Model usage policy and safety guardrails
+Tags: model policy, guardrails, prompt injection, pii, safety
+Updated: 2026-06-01
+
+Customer audio and transcripts are never used to train a shared model. Tenant
+data stays inside the tenant boundary, and the only learning loop we run is the
+per-tenant retrieval relevance fixture, which stores queries and document
+identifiers, never call content.
+
+Every reply the agent gives must be grounded in retrieved evidence. When the
+retriever returns nothing above the confidence gate the agent is required to say
+it does not have evidence instead of guessing, and the refusal is logged as a
+retrieval outcome rather than an error.
+
+Inbound text is scanned for prompt injection before it reaches the model.
+Instructions that try to override the system prompt, exfiltrate it, or trigger a
+sensitive tool are recorded and neutralised, and tool arguments are always
+validated against the declared JSON schema, so a crafted transcript cannot call
+an unlisted tool.
+
+Personally identifying information is redacted from logs before storage: email
+addresses, phone numbers and card-like digit runs are replaced with typed
+placeholders. Tool calls that move money require a human approver unless the
+account has explicitly enabled auto-approval in its settings.

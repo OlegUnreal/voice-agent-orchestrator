@@ -1,0 +1,22 @@
+Title: Text-to-speech voices and prosody
+Tags: text to speech, voices, prosody, latency, streaming
+Updated: 2026-05-18
+
+Speech synthesis is streamed sentence by sentence. The first audio frame is
+returned as soon as the model has a complete clause, which keeps the caller
+from hearing a gap between the agent's decision and its voice.
+
+Twelve production voices ship across the supported languages, each with a
+neutral register and a warmer conversational variant. Voice choice is a
+per-trunk setting, not a per-call one, so a caller hears the same agent across
+the whole conversation. Speaking rate is adjustable within a narrow band;
+outside it the voices lose intelligibility on telephone audio.
+
+Numbers, currency and phone strings are normalised by a text front end before
+synthesis: an account identifier is spelled as digits, a money amount is read as
+words, and a decimal separator is spoken explicitly. Embedding markup directly
+in agent output is discouraged because it leaks into transcripts.
+
+If synthesis fails mid-reply, the pipeline falls back to a compact tone-free
+placeholder sentence and reports the incident, rather than leaving the caller in
+silence.

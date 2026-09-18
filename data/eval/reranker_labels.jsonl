@@ -1,0 +1,71 @@
+# Reranker training fixture: (query, document, relevant) supervision.
+#
+# One JSON object per line. `relevant` documents contribute positives (every
+# chunk of them), `negatives` are hard negatives chosen because they share
+# vocabulary with the query but do not answer it, and `weak_negatives` pulls in
+# every remaining document as a negative too. Queries here are deliberately
+# different surface forms from data/eval/retrieval_golden.json - nothing that is
+# trained on is later reported on, and nothing that is reported on was trained.
+#
+# split=train fits the weights; split=dev is where P@1 / MRR in the artifact come from.
+{"query": "money back for minutes we never used", "split": "train", "relevant": ["refunds"], "negatives": ["cancellation", "billing"], "weak_negatives": true}
+{"query": "the fourteen day refund deadline", "split": "train", "relevant": ["refunds"], "negatives": ["billing", "pricing"], "weak_negatives": true}
+{"query": "manager sign off on a late money return request", "split": "train", "relevant": ["refunds"], "negatives": ["model_policy", "incidents"], "weak_negatives": true}
+{"query": "opening hours of the help desk in utc", "split": "train", "relevant": ["hours"], "negatives": ["transfer_to_human", "sla"], "weak_negatives": true}
+{"query": "does somebody get woken in the night for a full outage", "split": "train", "relevant": ["hours", "incidents"], "negatives": ["sla", "latency"], "weak_negatives": true}
+{"query": "how you grade a total loss of voice traffic", "split": "train", "relevant": ["incidents", "hours"], "negatives": ["sla", "telephony"], "weak_negatives": true}
+{"query": "credits we receive when availability slips", "split": "train", "relevant": ["sla"], "negatives": ["billing", "refunds"], "weak_negatives": true}
+{"query": "maintenance window on a tuesday night", "split": "train", "relevant": ["sla"], "negatives": ["incidents", "hours"], "weak_negatives": true}
+{"query": "audit report under an nda", "split": "train", "relevant": ["security"], "negatives": ["model_policy", "data_residency"], "weak_negatives": true}
+{"query": "keys used to encrypt media at rest", "split": "train", "relevant": ["security"], "negatives": ["data_residency", "recording_consent"], "weak_negatives": true}
+{"query": "keeping european customer audio inside the eu", "split": "train", "relevant": ["data_residency"], "negatives": ["security", "languages"], "weak_negatives": true}
+{"query": "the tone that plays before recording starts", "split": "train", "relevant": ["recording_consent"], "negatives": ["tts", "telephony"], "weak_negatives": true}
+{"query": "forget me request in the middle of a call", "split": "train", "relevant": ["recording_consent", "cancellation"], "negatives": ["model_policy", "security"], "weak_negatives": true}
+{"query": "carrying an existing trunk with our own sbc", "split": "train", "relevant": ["telephony"], "negatives": ["integrations", "rate_limits"], "weak_negatives": true}
+{"query": "silence at the end of a sentence ends the utterance", "split": "train", "relevant": ["stt", "product"], "negatives": ["latency", "tts"], "weak_negatives": true}
+{"query": "biasing the recogniser toward our product names", "split": "train", "relevant": ["stt"], "negatives": ["knowledge_base", "model_policy"], "weak_negatives": true}
+{"query": "reading an account number out digit by digit", "split": "train", "relevant": ["tts"], "negatives": ["stt", "integrations"], "weak_negatives": true}
+{"query": "first audio frame after the model decides", "split": "train", "relevant": ["latency", "tts"], "negatives": ["product", "stt"], "weak_negatives": true}
+{"query": "why averages hide the tail callers notice", "split": "train", "relevant": ["latency", "analytics"], "negatives": ["cost_model", "incidents"], "weak_negatives": true}
+{"query": "getting a 429 with a retry after header", "split": "train", "relevant": ["rate_limits"], "negatives": ["integrations", "incidents"], "weak_negatives": true}
+{"query": "busy tone when every seat is taken", "split": "train", "relevant": ["rate_limits", "transfer_to_human"], "negatives": ["telephony", "hours"], "weak_negatives": true}
+{"query": "cheaper rates once we cross fifty thousand minutes", "split": "train", "relevant": ["pricing"], "negatives": ["billing", "cost_model"], "weak_negatives": true}
+{"query": "reverse charge on an eu vat number", "split": "train", "relevant": ["billing"], "negatives": ["pricing", "cancellation"], "weak_negatives": true}
+{"query": "cents of model spend per four minute conversation", "split": "train", "relevant": ["cost_model"], "negatives": ["pricing", "latency"], "weak_negatives": true}
+#
+# Unanswerable supervision: `relevant` is empty on purpose. With weak_negatives
+# every chunk of the corpus becomes a labelled negative for these queries, which
+# is what teaches the calibrated gate that "shares vocabulary with a policy
+# document" is not the same as "answered by one". Surface forms are deliberately
+# different from the golden abstention queries q45-q50, which stay untouched by
+# training. Without these rows the intercept pushes every lexical near-miss past
+# the gate: measured before this block, "does the refund policy cover shipping
+# costs" came back at P=0.99 from the refunds document.
+{"query": "refund policy for a damaged headset", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "export my whatsapp conversation history", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "who is the chief executive of the vendor", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "change the password on my admin login", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "send a fax of the signed order form", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "exchange rate used on a currency converted invoice", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "can I pay my invoice with bitcoin", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "what is the headcount of your engineering team", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "can I buy a prepaid sim card for my phone", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "does the agent speak latin", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "rotate the ssh keys on our bastion host", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "sync our salesforce pipeline into the crm", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "what is the carbon footprint of a training run", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "how do we become a certified reseller partner", "split": "train", "relevant": [], "negatives": [], "weak_negatives": true}
+{"query": "signed links for raw media in an export", "split": "dev", "relevant": ["cancellation"], "negatives": ["analytics", "recording_consent"], "weak_negatives": true}
+{"query": "webhook signature header and rotation", "split": "dev", "relevant": ["integrations"], "negatives": ["security", "telephony"], "weak_negatives": true}
+{"query": "weeks of work before the first live call", "split": "dev", "relevant": ["onboarding"], "negatives": ["knowledge_base", "sla"], "weak_negatives": true}
+{"query": "counting a call the bot finished without a person", "split": "dev", "relevant": ["analytics"], "negatives": ["transfer_to_human", "cost_model"], "weak_negatives": true}
+{"query": "accents pushing recognition errors up in tokyo", "split": "dev", "relevant": ["languages", "stt"], "negatives": ["tts", "data_residency"], "weak_negatives": true}
+{"query": "the agent must not make up an answer", "split": "dev", "relevant": ["model_policy", "knowledge_base"], "negatives": ["cost_model", "analytics"], "weak_negatives": true}
+{"query": "redacting a phone number before it hits the log", "split": "dev", "relevant": ["model_policy"], "negatives": ["security", "recording_consent"], "weak_negatives": true}
+{"query": "handing the caller to a queue with the transcript attached", "split": "dev", "relevant": ["transfer_to_human"], "negatives": ["telephony", "integrations"], "weak_negatives": true}
+{"query": "who is the chief executive officer of northwind voice labs", "split": "train", "relevant": [], "negatives": ["analytics", "billing", "cancellation", "cost_model", "data_residency", "hours", "incidents", "integrations", "knowledge_base", "languages", "latency", "model_policy", "onboarding", "pricing", "product", "rate_limits", "recording_consent", "refunds", "security", "sla", "stt", "telephony", "transfer_to_human", "tts"], "weak_negatives": true}
+{"query": "can we export whatsapp chats into our crm", "split": "train", "relevant": [], "negatives": ["analytics", "billing", "cancellation", "cost_model", "data_residency", "hours", "incidents", "integrations", "knowledge_base", "languages", "latency", "model_policy", "onboarding", "pricing", "product", "rate_limits", "recording_consent", "refunds", "security", "sla", "stt", "telephony", "transfer_to_human", "tts"], "weak_negatives": true}
+{"query": "does the refund policy cover shipping costs", "split": "train", "relevant": [], "negatives": ["analytics", "billing", "cancellation", "cost_model", "data_residency", "hours", "incidents", "integrations", "knowledge_base", "languages", "latency", "model_policy", "onboarding", "pricing", "product", "rate_limits", "recording_consent", "refunds", "security", "sla", "stt", "telephony", "transfer_to_human", "tts"], "weak_negatives": true}
+{"query": "how do our agents reset an end customer password", "split": "train", "relevant": [], "negatives": ["analytics", "billing", "cancellation", "cost_model", "data_residency", "hours", "incidents", "integrations", "knowledge_base", "languages", "latency", "model_policy", "onboarding", "pricing", "product", "rate_limits", "recording_consent", "refunds", "security", "sla", "stt", "telephony", "transfer_to_human", "tts"], "weak_negatives": true}
+{"query": "can the agent send a fax confirmation to a customer", "split": "dev", "relevant": [], "negatives": ["analytics", "billing", "cancellation", "cost_model", "data_residency", "hours", "incidents", "integrations", "knowledge_base", "languages", "latency", "model_policy", "onboarding", "pricing", "product", "rate_limits", "recording_consent", "refunds", "security", "sla", "stt", "telephony", "transfer_to_human", "tts"], "weak_negatives": true}
+{"query": "what exchange rate is applied to invoices billed in a foreign currency", "split": "dev", "relevant": [], "negatives": ["analytics", "billing", "cancellation", "cost_model", "data_residency", "hours", "incidents", "integrations", "knowledge_base", "languages", "latency", "model_policy", "onboarding", "pricing", "product", "rate_limits", "recording_consent", "refunds", "security", "sla", "stt", "telephony", "transfer_to_human", "tts"], "weak_negatives": true}

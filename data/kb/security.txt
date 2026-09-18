@@ -1,0 +1,21 @@
+Title: Security, certifications, and encryption
+Tags: security, soc2, encryption, iso27001, penetration test
+Updated: 2026-01-28
+
+Northwind Voice Labs holds SOC 2 Type II and ISO 27001. The current SOC 2 audit
+report and the most recent penetration test summary are shared under NDA;
+send a request to the security mailbox from an authorised address and the
+report is delivered within two business days.
+
+Audio in transit is carried over TLS 1.2 or higher for API traffic and SRTP for
+media. Audio at rest is encrypted with AES-256 using per-tenant keys, and
+transcript text is encrypted in a separate store so a leaked transcript cannot
+be joined to raw media without both keys.
+
+Access to production is gated by single sign-on with hardware keys, just-in-time
+elevations that expire in four hours, and an immutable audit log. Customer audio
+is not accessible from the general engineering role; only the on-call
+telephony engineer holds a break-glass path, and every use is reviewed weekly.
+
+Subprocessors are listed in the trust centre and customers receive 30 days of
+notice before a new subprocessor that touches customer content is added.

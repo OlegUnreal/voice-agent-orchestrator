@@ -1,0 +1,24 @@
+Title: Call recording and consent capture
+Tags: recording, consent, retention, disclosure
+Updated: 2026-05-06
+
+Recording is off by default and enabled per trunk. When enabled, the caller
+hears a disclosure line before the agent answers, and the accepted consent is
+written to the call record with the timestamp and the disclosure version that
+was played.
+
+Consent handling differs by jurisdiction. Two-party regions require the caller
+to say a confirmation phrase, which the pipeline captures as an explicit
+transcript segment; one-party regions rely on the disclosure tone. The
+jurisdiction is derived from the trunk country, never from the caller location,
+and the mapping is reviewed quarterly.
+
+Recordings and their transcripts are retained for 90 days by default. Growth
+tenants may select 30 or 90 days and Enterprise tenants may select up to 365
+days. After the retention window the media object is deleted first and the
+transcript text is purged in the nightly sweep, so a call older than the window
+cannot be re-listened to even by an administrator.
+
+A caller may ask to be forgotten mid-call. The agent ends the recording flag,
+and the call is scheduled for deletion the same day rather than at the end of
+the retention period.

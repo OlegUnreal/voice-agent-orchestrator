@@ -1,0 +1,23 @@
+Title: Supported languages and accents
+Tags: languages, locales, accents, translation, coverage
+Updated: 2026-04-30
+
+Speech understanding ships for 24 languages with telephone-tuned acoustic
+models, and synthesis for 18 of them. English, German, French, Spanish,
+Portuguese, Italian, Dutch, Polish, Swedish, Norwegian, Danish, Turkish,
+Japanese, Korean, Mandarin and Hindi cover the deployed base; the console lists
+the current matrix per capability, because understanding and synthesis coverage
+are not the same set.
+
+Language is detected from the first 800 milliseconds of an utterance and can
+switch mid-call. A caller who moves between languages gets the reply in the
+language they just used, and the transcript keeps the original language plus a
+normalised English gloss for the CRM record.
+
+Accent robustness is measured separately from language coverage. Broad regional
+accents are supported in every listed language; heavy first-language interference
+raises word error rate noticeably in Japanese and Mandarin, and those queues are
+the recommended candidates for a human fallback.
+
+Custom vocabularies are per language, so a German deployment should not register
+English product codes in the same biasing list.

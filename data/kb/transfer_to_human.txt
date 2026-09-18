@@ -1,0 +1,22 @@
+Title: Transfer to a human agent
+Tags: escalation, transfer, human, handoff, queue, warm transfer
+Updated: 2026-05-22
+
+The agent transfers to a human when the caller asks for one, when the topic is
+out of scope, when two consecutive turns fail comprehension, or when a tool the
+caller needs is unavailable. Transfer is never held back to force a resolution.
+
+Warm transfer passes context: the receiving agent sees the transcript so far,
+the intent the classifier settled on, the tool results, and the caller waiting
+time before the transfer. A cold transfer only passes the phone number and is
+available on Starter.
+
+Queue behaviour depends on your contact centre. If a seat is free the call is
+bridged with hold audio; if nobody answers within the timeout the caller is
+offered a callback slot or a ticket, and the choice is logged. Callbacks are
+scheduled in the caller's own timezone even when the queue is measured in UTC.
+
+Out-of-hours handling is a per-trunk setting and follows the support window for
+the tenant: the caller is told when a human will next be reachable rather than
+being told the office is closed. Transfers to an external number use the
+secondary trunk if the first fails.
