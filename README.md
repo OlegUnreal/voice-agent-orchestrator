@@ -1,5 +1,7 @@
 # Voice Agent Orchestrator
 
+[![CI](https://github.com/OlegUnreal/voice-agent-orchestrator/actions/workflows/ci.yml/badge.svg)](https://github.com/OlegUnreal/voice-agent-orchestrator/actions/workflows/ci.yml)
+
 Production-style voice agent backend: provider abstraction, streaming tool loop, RAG with grounded refusal, PII/injection defenses, traces, and evals that actually fail.
 
 Offline mode (empty `PROVIDER_API_KEY`) uses a scripted model so `pytest`, golden evals, and the demo UI run without network.
